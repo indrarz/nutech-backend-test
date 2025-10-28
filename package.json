@@ -1,0 +1,48 @@
+{
+  "name": "nutech-backend-test",
+  "version": "1.0.0",
+  "description": "Backend for Nutech Take Home Test",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/indrarz/nutech-backend-test.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/indrarz/nutech-backend-test/issues"
+  },
+  "homepage": "https://github.com/indrarz/nutech-backend-test#readme",
+  "dependencies": {
+    "bcryptjs": "^3.0.2",
+    "compression": "^1.8.1",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
+    "crypto": "^1.0.1",
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
+    "express-session": "^1.18.2",
+    "file-type": "^21.0.0",
+    "fs": "^0.0.1-security",
+    "helmet": "^8.1.0",
+    "html-entities": "^2.6.0",
+    "jsonwebtoken": "^9.0.2",
+    "jwt-decode": "^4.0.0",
+    "moment": "^2.30.1",
+    "moment-timezone": "^0.6.0",
+    "morgan": "^1.10.1",
+    "multer": "^2.0.2",
+    "mysql": "^2.18.1",
+    "mysql2": "^3.15.3",
+    "path": "^0.12.7",
+    "puppeteer": "^24.26.1",
+    "sequelize": "^6.37.7",
+    "uuid": "^13.0.0"
+  }
+}

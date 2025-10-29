@@ -1,9 +1,5 @@
 const jwt = require("jsonwebtoken");
 const jwt_decode = require("jwt-decode");
-const { NotFoundError } = require("../error");
-const { response } = require("../helper/bcrypt");
-
-const blacklist = [];
 
 module.exports = {
   authenticateToken: (req, res, next) => {
@@ -11,47 +7,45 @@ module.exports = {
       const authHeader = req.headers["authorization"];
       const token = authHeader && authHeader.split(" ")[1];
 
-      if (!token) throw new NotFoundError("Token tidak valid atau kadaluwarsa");
-
-      if (blacklist.includes(token)) {
-        throw new NotFoundError("Token tidak valid atau kadaluwarsa");
-      }
-
-      jwt.verify(token, process.env.ACCESS_JWT_SECRET, (err, user) => {
-        if (err) {
-          throw new NotFoundError("Token tidak valid atau kadaluwarsa");
-        }
-
-        req.user = user;
-        res.locals.token = token;
-        next();
-      });
-    } catch (error) {
-      if (error.name === "NotFoundError") {
-        return response(res, {
+      if (!token) {
+        return res.status(401).json({
           status: 108,
-          message: error.message,
+          message: "Token tidak tidak valid atau kadaluwarsa",
           data: null,
         });
       }
 
-      return response(res, {
-        status: 500,
-        message: "Terjadi kesalahan.",
+      // Verifikasi token
+      jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
+        if (err) {
+          return res.status(403).json({
+            status: 108,
+            message: "Token tidak tidak valid atau kadaluwarsa",
+            data: null,
+          });
+        }
+
+        req.user = user;
+        next();
+      });
+    } catch (error) {
+      return res.status(403).json({
+        status: 108,
+        message: "Token tidak tidak valid atau kadaluwarsa",
         data: null,
       });
     }
   },
 
+  // Decode payload JWT untuk ambil data user
   parseJwtPayload: (token) => {
     return jwt_decode(token);
   },
 
-  generateAccessToken: (user) => {
-    return jwt.sign(user, process.env.ACCESS_JWT_SECRET, { expiresIn: "3h" });
-  },
-
-  blacklistToken: (token) => {
-    blacklist.push(token);
+  // Generate JWT dengan expired 12 jam
+  generateAccessToken: (email) => {
+    return jwt.sign({ email }, process.env.JWT_SECRET, {
+      expiresIn: "12h",
+    });
   },
 };

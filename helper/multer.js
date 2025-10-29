@@ -1,54 +1,41 @@
-const multer = require('multer');
-
-// Konfigurasi penyimpanan di memori
+const multer = require("multer");
 const storage = multer.memoryStorage();
 
 // Filter file yang diizinkan
 const fileFilter = (_req, file, cb) => {
-  if (
-    [
-      'image/jpeg',
-      'image/png',
-      'application/pdf',
-      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-      'application/vnd.ms-excel',
-    ].includes(file.mimetype)
-  ) {
+  const allowedTypes = ["image/jpeg", "image/png"];
+  if (allowedTypes.includes(file.mimetype)) {
     cb(null, true);
   } else {
-    cb(
-      new Error(
-        'Jenis berkas tidak valid! Hanya JPEG, PNG, dan PDF yang diizinkan.',
-      ),
-      false,
-    );
+    cb(new Error("Format Image tidak sesuai"), false);
   }
 };
 
-// Middleware upload
-const upload = multer({
+// Konfigurasi multer
+const size = multer({
   storage,
-  limits: { fileSize: 1024 * 1024 * 5 }, // Max file size = 5 MB
+  limits: { fileSize: 1024 * 1024 * 5 }, // Maksimum 5 MB
   fileFilter,
 }).any();
 
-// Middleware untuk menangani error dari Multer
-const uploadMiddleware = (req, res, next) => {
-  upload(req, res, (err) => {
+// Middleware upload
+const upload = (req, res, next) => {
+  size(req, res, (err) => {
     if (err instanceof multer.MulterError) {
-      // Error dari multer (ukuran file terlalu besar, dll.)
+      // Error dari multer
       return res.status(400).json({
-        success: false,
+        status: 102,
         message:
-          err.code === 'LIMIT_FILE_SIZE'
-            ? 'Ukuran berkas terlalu besar! Maksimal 5 MB.'
+          err.code === "LIMIT_FILE_SIZE"
+            ? "Ukuran berkas terlalu besar! Maksimal 5 MB."
             : err.message,
+        data: null,
       });
     } else if (err) {
-      // Error lain (misalnya format file tidak sesuai)
       return res.status(400).json({
-        success: false,
-        message: err.message || 'Pengunggahan berkas gagal!',
+        status: 102,
+        message: err.message || "Pengunggahan berkas gagal!",
+        data: null,
       });
     }
     next();
@@ -56,5 +43,5 @@ const uploadMiddleware = (req, res, next) => {
 };
 
 module.exports = {
-  uploadMiddleware,
+  upload,
 };

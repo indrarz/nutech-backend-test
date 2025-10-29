@@ -1,12 +1,12 @@
-require('dotenv').config();
-const app = require('./app');
-const { db, connectDb } = require('./config/db');
+require("dotenv").config();
+const app = require("./app");
+const { connectDb } = require("./config/db");
 
 function normalizePort(port) {
-  if (typeof port === 'string') {
+  if (typeof port === "string") {
     return parseInt(port);
-  } else if (typeof port === 'undefined') {
-    return 4001;
+  } else if (typeof port === "undefined") {
+    return 4000;
   }
 
   return port;
@@ -14,7 +14,6 @@ function normalizePort(port) {
 
 (async () => {
   await connectDb();
-  await db.sync({});
 })();
 
 const port = normalizePort(process.env.PORT);

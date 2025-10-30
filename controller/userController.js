@@ -1,9 +1,11 @@
 const User = require("../model/User");
 const path = require("path");
+const { connectDb } = require("../config/db");
 
 module.exports = {
   getOne: async (req, res) => {
     try {
+      await connectDb();
       const { email } = req.user;
 
       if (!email) {
@@ -58,6 +60,7 @@ module.exports = {
 
   update: async (req, res) => {
     try {
+      await connectDb();
       const { email } = req.user;
       const { first_name, last_name } = req.body;
 
@@ -117,6 +120,7 @@ module.exports = {
 
   image: async (req, res) => {
     try {
+      await connectDb();
       const { email } = req.user;
 
       if (!email) {
@@ -193,6 +197,7 @@ module.exports = {
 
   getImage: async (req, res) => {
     try {
+      await connectDb();
       const { filename } = req.params;
 
       if (!filename) {

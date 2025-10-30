@@ -1,9 +1,11 @@
 const Service = require("../model/Service");
 const path = require("path");
+const { connectDb } = require("../config/db");
 
 module.exports = {
   getAll: async (req, res) => {
     try {
+      await connectDb();
       const { email } = req.user;
 
       if (!email) {
@@ -62,6 +64,7 @@ module.exports = {
 
   getImage: async (req, res) => {
     try {
+      await connectDb();
       const { filename } = req.params;
       const { email } = req.user;
 
@@ -109,6 +112,7 @@ module.exports = {
 
   create: async (req, res) => {
     try {
+      await connectDb();
       let { service_code, service_name, service_tariff } = req.body;
 
       if (!service_code || !service_name || service_tariff == null) {

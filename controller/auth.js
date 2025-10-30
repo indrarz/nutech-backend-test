@@ -2,12 +2,14 @@ const User = require("../model/User");
 const { hashPassword } = require("../helper/bcrypt");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const { connectDb } = require("../config/db");
 
 module.exports = {
   register: async (req, res) => {
     const { email, first_name, last_name, password } = req.body;
 
     try {
+      await connectDb();
       // Validasi format email
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!email || !emailRegex.test(email)) {
@@ -64,6 +66,7 @@ module.exports = {
     const { email, password } = req.body;
 
     try {
+      await connectDb();
       // Validasi format email
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!email || !emailRegex.test(email)) {

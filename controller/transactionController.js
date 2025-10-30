@@ -1,10 +1,12 @@
 const User = require("../model/User");
 const Transaction = require("../model/Transaction");
 const Service = require("../model/Service");
+const { connectDb } = require("../config/db");
 
 module.exports = {
   balance: async (req, res) => {
     try {
+      await connectDb();
       const { email } = req.user;
 
       if (!email) {
@@ -49,6 +51,7 @@ module.exports = {
 
   history: async (req, res) => {
     try {
+      await connectDb();
       const { email } = req.user;
       const { limit, offset } = req.query;
 
@@ -113,6 +116,7 @@ module.exports = {
 
   topup: async (req, res) => {
     try {
+      await connectDb();
       const { email } = req.user;
       let { top_up_amount } = req.body;
 
@@ -182,6 +186,7 @@ module.exports = {
 
   create: async (req, res) => {
     try {
+      await connectDb();
       const { email } = req.user;
       const { service_code } = req.body;
 

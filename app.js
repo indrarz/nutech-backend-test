@@ -4,10 +4,14 @@ const cookieParser = require('cookie-parser');
 const helmet = require('helmet');
 const compression = require('compression');
 const morgan = require('morgan');
-const fs = require('fs');
 
 const auth = require('./router/auth');
 const user = require('./router/user');
+const banner = require('./router/banner');
+const service = require('./router/service');
+const topup = require('./router/topup');
+const transaction = require('./router/transaction');
+const balance = require('./router/balance');
 
 const app = express();
 
@@ -26,5 +30,10 @@ app.use(cors({
 
 app.use('/', auth);
 app.use('/profile', user);
+app.use('/banner', banner);
+app.use('/services', service);
+app.use('/topup', topup);
+app.use('/transaction', transaction);
+app.use('/balance', balance);
 
 module.exports = app;

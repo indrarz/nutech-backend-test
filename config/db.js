@@ -1,19 +1,26 @@
-const { connect } = require("mongoose");
+const mongoose = require("mongoose");
+
+let isConnected = false;
 
 async function connectDb() {
+  if (isConnected) {
+    console.log("MongoDB already connected");
+    return;
+  }
+
   try {
-    await connect(process.env.MONGODB_URI, {
+    const conn = await mongoose.connect(process.env.MONGODB_URI, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
-      serverSelectionTimeoutMS: 30000,
+      serverSelectionTimeoutMS: 10000,
     });
-    console.log("MongoDB Connected!");
+
+    isConnected = conn.connections[0].readyState === 1;
+    console.log("MongoDB Connected:", conn.connection.host);
   } catch (err) {
-    console.error(err.message);
-    process.exit(1);
+    console.error("MongoDB connection error:", err.message);
+    throw err;
   }
 }
 
-module.exports = {
-  connectDb,
-};
+module.exports = { connectDb };

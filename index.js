@@ -8,13 +8,21 @@ function normalizePort(port) {
   } else if (typeof port === "undefined") {
     return 4000;
   }
-
   return port;
 }
 
-(async () => {
-  await connectDb();
-})();
-
 const port = normalizePort(process.env.PORT);
-app.listen(port, () => console.log(`Application running on port ${port}`));
+
+async function startServer() {
+  try {
+    await connectDb();
+    app.listen(port, () => {
+      console.log(`Application running on port ${port}`);
+    });
+  } catch (err) {
+    console.error("Failed to connect to MongoDB:", err.message);
+    process.exit(1);
+  }
+}
+
+startServer();

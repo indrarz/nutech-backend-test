@@ -12,11 +12,10 @@ async function connectDb() {
     const conn = await mongoose.connect(process.env.MONGODB_URI, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
-      serverSelectionTimeoutMS: 10000,
     });
 
     isConnected = conn.connections[0].readyState === 1;
-    console.log("MongoDB Connected:", conn.connection.host);
+    console.log("MongoDB Connected!");
   } catch (err) {
     console.error("MongoDB connection error:", err.message);
     throw err;

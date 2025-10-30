@@ -1,9 +1,11 @@
 const Banner = require("../model/Banner");
 const path = require("path");
+const { connectDb } = require("../config/db");
 
 module.exports = {
   getAll: async (req, res) => {
     try {
+      await connectDb();
       const banners = await Banner.find().sort({ createdAt: 1 });
 
       if (!banners || banners.length === 0) {
@@ -51,6 +53,7 @@ module.exports = {
 
   getImage: async (req, res) => {
     try {
+      await connectDb();
       const { filename } = req.params;
 
       if (!filename) {
@@ -89,6 +92,7 @@ module.exports = {
 
   create: async (req, res) => {
     try {
+      await connectDb();
       const { banner_name, description } = req.body;
 
       if (!banner_name || !description) {

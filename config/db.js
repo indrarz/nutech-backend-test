@@ -5,7 +5,7 @@ async function connectDb() {
     await connect(process.env.DB_URI, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
-      tls: true,
+      serverSelectionTimeoutMS: 30000,
     });
     console.log("MongoDB Connected!");
   } catch (err) {

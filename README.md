@@ -112,3 +112,8 @@ CREATE TABLE transactions (
 );
 
 ```
+
+## Link Aplikasi
+https://nutech-backend-gamma.vercel.app
+## API Docs
+https://documenter.getpostman.com/view/30035052/2sB3WnxNKZ
